@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Resource Library</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            padding-bottom: 100px; /* Ensure space for the footer */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            color: #333;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            text-align: center;
+            height: 115px;
+            animation: slideDown 1s ease-out;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5rem;
+            font-weight: normal;
+            color: #327072;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            padding-top: 100px; /* Adjust this value based on the header height */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .container .description {
+            flex: 1;
+        }
+
+        .container .description h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .container .description p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        footer {
+            background-color: #ffffff;
+            color: #000000;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Welcome to Legal Resource Library</h1>
+        <h2>Companies Act 2013</h2>
+    </header>
+
+    <!-- Description Section -->
+    <div class="container">
+        <div class="description">
+            <h3>About Companies Act 2013</h3>
+            <p>
+                The Companies Act 2013 governs the incorporation, responsibilities, and functioning of companies in India.
+                It aims to improve corporate governance, simplify regulations, and protect stakeholders. The Act has introduced
+                key reforms, including provisions for corporate social responsibility and enhanced accountability measures.
+            </p>
+        </div>
+        <img src="company.png" alt="Companies Act 2013">
+    </div>
+
+    <!-- New Functionality Section -->
+    <h3 class="subheading">Select a High Court</h3>
+    <div id="court-buttons">
+        <button onclick="redirectToCases('Allahabad High Court')">Allahabad High Court</button>
+        <button onclick="redirectToCases('Bombay High Court')">Bombay High Court</button>
+        <button onclick="redirectToCases('Kerala High Court')">Kerala High Court</button>
+        <button onclick="redirectToCases('Andhra High Court')">Andhra High Court</button>
+        <button onclick="redirectToCases('Chattisgarh High Court')">Chattisgarh High Court</button>
+        <button onclick="redirectToCases('Jharkhand High Court')">Jharkhand High Court</button>
+        <button onclick="redirectToCases('Rajasthan High Court')">Rajasthan High Court</button>
+        <button onclick="redirectToCases('Tripura High Court')">Tripura High Court</button>
+        <button onclick="redirectToCases('Madras High Court')">Madras High Court</button>
+        <button onclick="redirectToCases('Calcutta High Court')">Calcutta High Court</button>
+        <button onclick="redirectToCases('Madhya Pradesh High Court')">Madhya Pradesh High Court</button>
+        <button onclick="redirectToCases('Delhi High Court')">Delhi High Court</button>
+        <button onclick="redirectToCases('Himachal High Court')">Himachal High Court</button>
+        <button onclick="redirectToCases('Patna High Court')">Patna High Court</button>
+        <button onclick="redirectToCases('Punjab-Haryana High Court')">Punjab-Haryana  High Court</button>
+        <button onclick="redirectToCases('Sikkim High Court')">Sikkim High Court</button>
+        <button onclick="redirectToCases('Gauhati High Court')">Gauhati High Court</button>
+        <button onclick="redirectToCases('Gujarat High Court')">Gujarat High Court</button>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Just Ease. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function redirectToCases(courtName) {
+            const url = `cases.html?court=${encodeURIComponent(courtName)}`;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Colors */
+    --primary-color: #232328;
+    --secondary-color: #1E1F20;
+    --secondary-hover-color: #333537;
+    --focus-color: #282A2C;
+    --focus-hover-color: #37393B;
+    --button-hover-color: #2f3030;
+    --text-color: #fff;
+    --text-secondary-color: #D8D8D8;
+    --heading-secondary-color: #444746;
+    --placeholder-color: #ABAFB3;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    
+    /* Transitions */
+    --transition-speed: 0.3s;
+}
+
+.light_mode {
+    --primary-color: #FFFFFF;
+    --secondary-color: #F0F4F9;
+    --secondary-hover-color: #DDE3EA;
+    --focus-color: #E9EEF6;
+    --focus-hover-color: #E1E6ED;
+    --button-hover-color: #E9ECF1;
+    --text-color: #000;
+    --text-secondary-color: #4D4D4D;
+    --heading-secondary-color: #C4C7C5;
+    --placeholder-color: #717075;
+}
+
+.wrapper {
+    background: var(--primary-color);
+    color: var(--text-color);
+    transition: background var(--transition-speed) ease;
+}
+.bg-white {
+    background-color: var(--secondary-hover-color); 
+  }
+/* Custom CSS for Sidebar */
+        /* Sidebar styles */
+#sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    background: var(--primary-color);
+    z-index: 1000;
+}
+#sidebar.open {
+    transform: translateX(0);
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    display: none;
+}
+.overlay.active {
+    display: block;
+}
+
+/* Smooth transition for the drawer */
+.drawer {
+    transition: transform 0.3s ease-in-out;
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Advisor - Case Files</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .case-file {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .case-file h3 {
+            margin-top: 0;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+        .pagination-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination-controls button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #7d00b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .pagination-controls button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .pagination-controls button:hover:not(:disabled) {
+            background-color: #815295a0;
+        }
+        .pagination-info {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="court-title"></h1>
+    <div id="case-files-container"></div>
+    <div class="pagination-controls">
+        <button id="back-button" onclick="fetchCourtCases(courtName, currentPage - 1)">Back</button>
+        <button id="current-button" onclick="fetchCourtCases(courtName, currentPage)">Current</button>
+        <button id="next-button" onclick="fetchCourtCases(courtName, currentPage + 1)">Next</button>
+        <div class="pagination-info" id="pagination-info"></div>
+    </div>
+
+    <script>
+        // Get court name from query parameters
+        const params = new URLSearchParams(window.location.search);
+        const courtName = params.get('court');
+
+        // Pagination state
+        let currentPage = 1;
+        let totalPages = 1;
+
+        // Update page title and header
+        document.getElementById('court-title').textContent = `${courtName} - Case Files`;
+
+        // Function to fetch cases
+        function fetchCourtCases(courtName, page = 1) {
+            if (page < 1 || page > totalPages) return; // Prevent invalid requests
+            
+            const url = `http://127.0.0.1:5000/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch case files.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    currentPage = data.page;
+                    totalPages = data.total_pages;
+                    displayCourtCases(data);
+                    updatePaginationControls();
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.getElementById('case-files-container').innerHTML = `
+                        <p class="error">Failed to fetch case files. Please try again later.</p>
+                    `;
+                });
+        }
+
+        // Function to display case files
+        function displayCourtCases(data) {
+            const container = document.getElementById('case-files-container');
+            container.innerHTML = '';
+
+            if (data && data.laws.length > 0) {
+                data.laws.forEach(law => {
+                    const caseFile = document.createElement('div');
+                    caseFile.classList.add('case-file');
+
+                    caseFile.innerHTML = `
+                        <h3>Law Name: ${law.law_name}</h3>
+                        <p><strong>Court Name:</strong> ${law.court_name}</p>
+                        <p><strong>Case Year:</strong> ${law.year}</p>
+                        <p><strong>Case Data:</strong></p>
+                        <ul>
+                            <li><strong>Case Name:</strong> ${law.case_data.case_name}</li>
+                            <li><strong>Bench:</strong> ${law.case_data.bench}</li>
+                            <li><strong>Issue:</strong> ${law.case_data.issue}</li>
+                            <li><strong>Petitioners Argument:</strong> ${law.case_data.petitioners_argument}</li>
+                            <li><strong>Respondents Argument:</strong> ${law.case_data.respondents_argument}</li>
+                            <li><strong>Court Reasoning:</strong> ${law.case_data.court_reasoning}</li>
+                            <li><strong>Conclusion:</strong> ${law.case_data.conclusion}</li>
+                        </ul>
+                    `;
+
+                    container.appendChild(caseFile);
+                });
+            } else {
+                container.innerHTML = '<p>No case files found for this court.</p>';
+            }
+        }
+
+        // Function to update pagination controls
+        function updatePaginationControls() {
+            document.getElementById('back-button').disabled = currentPage <= 1;
+            document.getElementById('next-button').disabled = currentPage >= totalPages;
+            document.getElementById('pagination-info').textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        // Fetch cases for the selected court
+        if (courtName) {
+            fetchCourtCases(courtName);
+        } else {
+            document.getElementById('case-files-container').innerHTML = `
+                <p class="error">No court selected. Please go back and choose a court.</p>
+            `;
+        }
+    </script>
+</body>
+</html>

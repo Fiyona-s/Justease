@@ -1,0 +1,156 @@
+/* General Reset */
+body, h1, h2, p, ul, li, a, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: url('Header.webp') center/cover no-repeat; /* Replace with your image */
+    background-color: #004085;
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+header nav ul li a {
+    color:#f39c12;
+    background-color: #2b2c2e;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: background 0.3s;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+/* Main Section */
+main {
+    padding: 40px 5px;  /* Add top/bottom padding */
+    margin-top: 20px; /* Space between the header and form */
+    margin-bottom: 0px;
+    text-align: center;
+    background: url('weigh.jpg') center/cover no-repeat; /* Replace with your image */
+    background-attachment: fixed; /* Optional: This keeps the background fixed while scrolling */
+    min-height: 100vh;  /* Ensures the section takes up at least the full height of the viewport */
+}
+
+
+.form-container {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; /* Center form horizontally */
+}
+
+.form-container h2 {
+    font-size: 2rem;
+    color:#000000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.form-footer {
+    text-align: center;
+}
+
+.form-footer .btn {
+    background-color: #2b2c2e;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.form-footer .btn:hover {
+    background-color: #0069d9;
+}
+
+.form-footer p {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.form-footer p a {
+    color: #004085;
+    text-decoration: none;
+}
+
+.form-footer p a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .form-container {
+        padding: 20px;
+    }
+
+    .form-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .input-group input,
+    .form-footer .btn {
+        font-size: 1rem;
+    }
+}

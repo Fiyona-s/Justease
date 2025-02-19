@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="aistyle.css">
+  <title>JustEase - Legal Advisory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+   /* Custom animations for FAQ and Contact Us */
+   .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .faq-item {
+      border: 1px solid #cbd5e1; /* Tailwind's gray-300 */
+      border-radius: 0.5rem; /* Tailwind's rounded-lg */
+      padding: 1rem; /* Tailwind's p-4 */
+      transition: background-color 0.3s;
+    }
+
+    .faq-item:hover {
+      background-color: #edf6fc; /* Tailwind's sky-100 */
+    }
+
+    .answer {
+      display: none;
+      margin-top: 0.5rem; /* Tailwind's mt-2 */
+      color: #1e40af; /* Tailwind's sky-600 */
+    }
+
+    .open .answer {
+      display: block;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-item {
+      display: none;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .carousel-item.active {
+      display: block;
+      position: relative;
+    }
+    .hidden {
+    display: none;
+  }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Navbar -->
+  <header class="bg-black text-white py-4 px-8 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">JustEase</h1>
+    <nav class="space-x-6">
+      <a href="#about" class="hover:text-gray-400">About</a>
+      <a href="#faq" class="hover:text-gray-400">FAQs</a>
+      <a href="#contactForm" class="hover:text-gray-400">Contact Us</a>
+      <button onclick="window.location.href='login.html'" class="bg-white text-black px-4 py-2 rounded-lg hover:bg-slate-300 hover:text-black transition duration-300">Get Started</button>
+    </nav>
+  </header>
+  
+
+  <!-- Hero Section -->
+  <section class="relative bg-black text-white h-[50vh] flex flex-col justify-center items-center">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/assets/Header.webp'); opacity: 0.5;"></div>
+    <div class="relative z-10 text-center">
+      <h2 class="text-4xl font-bold">Empowering Your Legal Journey</h2>
+      <p class="mt-4 text-lg">Access legal knowledge and support with ease.</p>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-10 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">Our Services</h2>
+      <div class="carousel">
+        <div class="carousel-item active p-10 border rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold">Legal Resource Library</h3>
+          <p class="mt-2">Clear and straightforward explanations of company law topics.</p>
+        </div>
+        <div class="carousel-item p-10 border rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold">AI Chat Assistant</h3>
+          <p class="mt-2">Organize and track your legal cases efficiently.</p>
+        </div>
+        <div class="carousel-item p-10 border rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold">Legal Consultations</h3>
+          <p class="mt-2">Find and book consultations with legal professionals.</p>
+        </div>
+        <div class="carousel-item p-10 border rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold">Document Templates</h3>
+          <p class="mt-2">Access to a variety of legal document templates.</p>
+        </div>
+        
+       
+        <div class="flex justify-center space-x-4 mt-4">
+          <button class="prev bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 hover:text-black transition duration-300">&lt;</button>
+          <button class="next bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 hover:text-black transition duration-300">&gt;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- About Section -->
+  <section id="about" class="py-12 bg-sky-30">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">About Us</h2>
+      <p>JustEase is dedicated to providing easy access to legal resources, empowering individuals and businesses to navigate the legal landscape with ease. Our platform offers a range of services, including legal information, document templates, and access to legal professionals, all aimed at simplifying the often complex legal journey.</p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+      <ul class="space-y-4">
+        <li class="faq-item">
+          <button class="question text-lg font-semibold text-blue-500" onclick="toggleAnswer(this)">What is JustEase?</button>
+          <p class="answer ">JustEase is a platform providing access to legal resources, consultations, and document templates.</p>
+        </li>
+        <li class="faq-item">
+          <button class="question text-lg font-semibold text-blue-500" onclick="toggleAnswer(this)">How do I use JustEase?</button>
+          <p class="answer">You can explore resources, book consultations, and download templates directly from our website.</p>
+        </li>
+        <li class="faq-item">
+          <button class="question text-lg font-semibold text-blue-500" onclick="toggleAnswer(this)">Can I get the appropriate location of the lawyer?</button>
+          <p class="answer">Yes, we provide location-based search options for legal professionals.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+   <!-- Contact Section -->
+   <section id="contactForm" class="py-12 bg-sky-30">
+    <div class="max-w-4xl mx-auto fade-in">
+      <h2 class="text-2xl font-bold mb-6">Contact Us</h2>
+      <form class="space-y-6" id="contactForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <input type="text" id="firstName" placeholder="First Name" class="w-full p-3 border rounded-lg" required>
+          <input type="text" id="lastName" placeholder="Last Name" class="w-full p-3 border rounded-lg" required>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <input type="email" id="email" placeholder="Email" class="w-full p-3 border rounded-lg" required>
+          <input type="tel" id="phone" placeholder="Phone Number" class="w-full p-3 border rounded-lg" required pattern="\d{10}">
+        </div>
+        <textarea id="message" placeholder="Message..." class="w-full p-3 border rounded-lg" rows="5" required></textarea>
+        <button type="submit" class="bg-black text-white px-6 py-2 rounded-lg hover:bg-zinc-700 hover:text-white transition duration-300">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+
+ 
+
+  <!-- Footer -->
+  <footer class="bg-black text-white py-5">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="font-bold text-xl">JustEase</h3>
+        <p>Making justice accessible</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-xl">Contact</h3>
+        <p>support@justease.com</p>
+        <p>+1 (555) 123-4567</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-xl">Follow Us</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-gray-400">Facebook</a>
+          <a href="#" class="hover:text-gray-400">Twitter</a>
+          <a href="#" class="hover:text-gray-400">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-8">© 2025 JustEase. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleAnswer(button) {
+    const answer = button.nextElementSibling;
+    answer.classList.toggle('hidden');
+  }
+    
+    
+
+    // Carousel Functionality
+    const items = document.querySelectorAll('.carousel-item');
+    let currentIndex = 0;
+
+    function showItem(index) {
+      items.forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+      });
+    }
+
+    document.querySelector('.next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % items.length;
+      showItem(currentIndex);
+    });
+
+    document.querySelector('.prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showItem(currentIndex);
+    });
+
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % items.length;
+      showItem(currentIndex);
+    }, 5000);
+
+    function toggleAnswer(button) {
+      const faqItem = button.parentElement;
+      faqItem.classList.toggle('open');
+      const answer = faqItem.querySelector('.answer');
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+    }
+
+ // Contact form submission with validation
+ document.getElementById("contactForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      // Validate phone number length
+      if (phone.length !== 10) {
+        alert("Phone number must be exactly 10 digits.");
+        return;
+      }
+
+      // Validate email format
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const formData = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        message
+      };
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text(); // Get the response text
+          throw new Error(`Server responded with ${response.status}: ${errorText}`);
+        }
+
+        const result = await response.json();
+        alert(result.message);
+        document.getElementById("contactForm").reset(); // Clear the form after submission
+      } catch (error) {
+        console.error("Form submission error:", error);
+      }
+    });
+  </script>
+</body>
+</html>
+
