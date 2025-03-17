@@ -15,14 +15,20 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, template_folder='templates')
 CORS(app, supports_credentials=True)
 
-# MongoDB setup
-client = MongoClient('mongodb+srv://fiyonasaji:fiyonasaji@cluster0.x1tki.mongodb.net/legal_advisor?retryWrites=true&w=majority')
-db = client['Just_Ease']
-laws_collection = db['Cases']
-users_collection = db['users']
-contacts_collection = db['contacts']
-sessions_collection = db['sessions']
-fs = gridfs.GridFS(db)
+MONGO_URI = os.getenv("MONGO_URI")  # Get MongoDB URI from environment variables
+
+try:
+    client = MongoClient(MONGO_URI)
+    db = client['Just_Ease']
+    laws_collection = db['Cases']
+    users_collection = db['users']
+    contacts_collection = db['contacts']
+    sessions_collection = db['sessions']
+    fs = gridfs.GridFS(db)
+    client.admin.command('ping')
+    print("✅ Successfully connected to MongoDB")
+except Exception as e:
+    print(f"❌ MongoDB connection error: {e}")
 
 # Your News API Key (Keep it private)
 NEWS_API_KEY = "8bfe418c7d034af5b101ef0b5263b303"  
