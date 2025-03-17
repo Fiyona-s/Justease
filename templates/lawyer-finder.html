@@ -302,7 +302,7 @@
             function fetchLawyers(lat, lng) {
                 showLoading(); // Show loading overlay
                 document.getElementById("status").innerHTML = "Searching for corporate lawyers...";
-                fetch(`http://127.0.0.1:5000/find_lawyers?lat=${lat}&lng=${lng}`)
+                fetch(`https://Justease.onrender.com/find_lawyers?lat=${lat}&lng=${lng}`)
                     .then(response => response.json())
                     .then(data => {
                         allLawyers = data.lawyers || [];
@@ -316,7 +316,7 @@
             function fetchLawyersByLocation(location) {
                 showLoading(); // Show loading overlay
                 document.getElementById("status").innerHTML = "Searching for: " + location;
-                fetch(`http://127.0.0.1:5000/find_lawyers_by_location?location=${encodeURIComponent(location)}`)
+                fetch(`https://Justease.onrender.com/find_lawyers_by_location?location=${encodeURIComponent(location)}`)
                     .then(response => {
                         console.log("Response status:", response.status); // Log the response status
                         return response.json();

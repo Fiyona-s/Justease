@@ -333,7 +333,7 @@
         function fetchCourtCases(courtName, page = 1) {
             if (page < 1 || page > totalPages) return;
 
-            const url = `http://127.0.0.1:5000/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
+            const url = `https://Justease.onrender.com/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
 
             // Show loading screen
             loadingScreen.classList.add('active');
@@ -484,7 +484,7 @@
         
         // Function to fetch cases based on search input
         function fetchSearchResults(searchTerm, page = 1) {
-            const url = `http://127.0.0.1:5000/laws/search?query=${encodeURIComponent(searchTerm)}&page=${page}&limit=5`;
+            const url = `https://Justease.onrender.com/laws/search?query=${encodeURIComponent(searchTerm)}&page=${page}&limit=5`;
 
             fetch(url)
             .then(response => {
