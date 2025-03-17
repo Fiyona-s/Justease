@@ -84,7 +84,6 @@ def track_page_visits():
 # Endpoints
 @app.route('/')
 def home():
-        
         return render_template('index.html')  # Make sure this file exists in "templates/"
 
 
@@ -640,4 +639,7 @@ def get_selected_items():
 if __name__ == '__main__':
     app.secret_key = 'alwin123123'
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    
+    # Get the port dynamically assigned by Render, default to 10000
+    port = int(os.environ.get("PORT", 10000))  
+    app.run(host='0.0.0.0', port=port, debug=True)
