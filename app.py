@@ -10,12 +10,15 @@ from datetime import datetime, timedelta
 import os  # Import the 'os' module
 import gridfs
 from io import BytesIO
-from werkzeug.utils import secure_filename  
+from werkzeug.utils import secure_filename 
+from dotenv import load_dotenv
+
+load_dotenv()  # Load variables from .env
+MONGO_URI = os.getenv("MONGO_URI")
 
 app = Flask(__name__, template_folder='templates')
 CORS(app, supports_credentials=True)
 
-MONGO_URI = os.getenv("MONGO_URI")  # Get MongoDB URI from environment variables
 
 try:
     client = MongoClient(MONGO_URI)
