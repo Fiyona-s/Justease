@@ -155,6 +155,10 @@ def doc():
 def checklist():
     return render_template('checklist.html')
 
+@app.route('/logout')
+def logout():
+    return render_template('logout.html')
+
 
 # Endpoint for the profile page
 @app.route('/profile')
