@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustEase - Login/Signup</title>
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen flex bg-white font-sans">
+    <div class="flex w-full">
+        <!-- Form container -->
+        <div class="flex flex-col justify-center items-center w-1/2 p-12 bg-white">
+            <h1 class="text-4xl font-bold mb-6 text-secondary"> JustEase</h1>
+
+            <div class="flex justify-center mb-4 space-x-4">
+                <a href="#" id="signin-tab" class="text-lg text-gray-500 font-semibold active:border-b-2 active:border-black">Sign In</a>
+                <a href="#" id="signup-tab" class="text-lg text-gray-500 font-semibold">Sign Up</a>
+            </div>
+
+            <!-- Sign-In Form -->
+            <div id="signin-form" class="w-full max-w-md bg-light shadow-lg rounded-lg p-10">
+                <p class="text-center text-gray-700 mb-4">Let's get started by filling out the form below.</p>
+                <form id="signin-form-validation" method="post">
+                    <input type="email" id="signin-email" name="email" placeholder="Email" class="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                    <div class="relative">
+                        <input type="password" id="signin-password" name="password" placeholder="Password" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required minlength="6">
+                        <i class="fas fa-eye-slash absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer show-password" onclick="togglePasswordVisibility('signin-password', this)"></i>
+                    </div>
+                    <p id="signin-error" class="text-red-500 text-sm hidden mt-2"></p> <!-- Error message -->
+                    <button type="submit" class="btn btn-primary w-full mt-4 py-2 rounded-lg transition-transform transform hover:scale-105 hover:text-white">Sign In</button>
+                </form>
+                <p class="text-gray-600 text-center py-2">Don't have an account? <span id="signup-link" class="text-blue-500 cursor-pointer">Sign up!</span></p>
+            </div>
+
+            <!-- Sign-Up Form -->
+            <div id="signup-form" class="hidden bg-light w-full max-w-md bg-sky-100 shadow-lg rounded-lg p-10">
+                <p class="text-center text-gray-700 mb-4">Create your account by filling out the form below.</p>
+                <form id="signup-form-validation" method="post" novalidate>
+                    <input type="text" id="signup-first-name" name="first-name" placeholder="First Name" class="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                    <input type="text" id="signup-last-name" name="last-name" placeholder="Last Name" class="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                    <input type="email" id="signup-email" name="email" placeholder="Email" class="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                    <div class="relative">
+                        <input type="password" id="signup-password" name="password" placeholder="Password" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required minlength="6">
+                        <i class="fas fa-eye-slash absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer show-password" onclick="togglePasswordVisibility('signup-password', this)"></i>
+                    </div>
+                    <p id="signup-error" class="text-red-500 text-sm hidden mt-2"></p> <!-- Error message -->
+                    <button type="submit" id="signup-submit-btn" class="btn btn-primary w-full mt-4 py-2 rounded-lg transition-transform transform hover:scale-105 hover:text-white">Sign Up</button>
+                </form>
+                
+                <p class="text-gray-600 text-center py-2">Have an account? <span id="signin-link" class="text-blue-500 cursor-pointer">Sign in!</span></p>
+            </div>
+        </div>
+
+        <!-- Image container -->
+        <div class="w-1/2 bg-cover bg-center" style="background-image: url('/static/assets/signin.jpg');"></div>
+    </div>
+
+    <!-- Success Dialog Box -->
+    <div id="success-dialog" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <p class="text-center text-xl font-bold text-secondary">Account Created!</p>
+        </div>
+    </div>
+
+    <script>
+
+
+        const signinTab = document.getElementById('signin-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const successDialog = document.getElementById('success-dialog');
+        const signinError = document.getElementById('signin-error');
+        const signupError = document.getElementById('signup-error');
+
+        // Regex for validating email format
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Activate Sign In tab on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            signinTab.classList.add('border-b-2', 'border-black', 'text-black');
+            signupTab.classList.remove('border-b-2', 'border-black', 'text-black');
+            signinForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+        });
+
+        // Switch to Sign In tab
+        signinTab.addEventListener('click', () => {
+            signinTab.classList.add('border-b-2', 'border-black', 'text-black');
+            signupTab.classList.remove('border-b-2', 'border-black', 'text-black');
+            signinForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            signinError.classList.add('hidden'); // Hide error message
+            document.getElementById("signin-form-validation").reset();
+        });
+
+        // Switch to Sign Up tab
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('border-b-2', 'border-black', 'text-black');
+            signinTab.classList.remove('border-b-2', 'border-black', 'text-black');
+            signupForm.classList.remove('hidden');
+            signinForm.classList.add('hidden');
+            signinError.classList.add('hidden'); // Hide error message
+            signupError.classList.add('hidden'); // Hide error message
+            document.getElementById("signup-form-validation").reset();
+        });
+
+        // Switch to Sign Up from Sign In
+        document.getElementById('signup-link').addEventListener('click', () => {
+            signupTab.click();
+        });
+
+        // Switch to Sign In from Sign Up
+        document.getElementById('signin-link').addEventListener('click', () => {
+            signinTab.click();
+        });
+
+        // Handle Sign-Up
+
+document.getElementById("signup-form-validation").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const firstName = document.getElementById("signup-first-name").value.trim();
+        const lastName = document.getElementById("signup-last-name").value.trim();
+        const emailField = document.getElementById("signup-email");
+        const passwordField = document.getElementById("signup-password");
+        const password = passwordField.value;
+        
+        // Strong password validation regex
+        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        // Validate first and last name
+        if (!firstName) {
+            signupError.textContent = "First name cannot be empty.";
+            signupError.classList.remove("hidden");
+            return;
+        }
+        if (!lastName) {
+            signupError.textContent = "Last name cannot be empty.";
+            signupError.classList.remove("hidden");
+            return;
+        }
+
+        // Validate email format
+        if (!emailRegex.test(emailField.value)) {
+            signupError.textContent = "Please enter a valid email address.";
+            signupError.classList.remove("hidden");
+            return;
+        }
+
+        // Validate password strength
+        if (!strongPasswordPattern.test(password)) {
+            signupError.textContent = "Password must be at least 8 characters long, include uppercase and lowercase letters, a number, and a special character.";
+            signupError.classList.remove("hidden");
+            return;
+        }
+
+        const userData = {
+            "first-name": firstName,
+            "last-name": lastName,
+            "email": emailField.value,
+            "password": password
+        };
+         try {
+                const response = await fetch("http://127.0.0.1:5000/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+
+                if (response.status === 201) {
+                    successDialog.classList.remove("hidden");
+                    setTimeout(() => {
+                        successDialog.classList.add("hidden");
+                        signinTab.click();
+                        document.getElementById("signup-form-validation").reset();
+                    }, 2000);
+                } else {
+                    signupError.textContent = result.message || "An unknown error occurred. Please try again.";
+                    signupError.classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error("Error: Unable to connect to the server.");
+                signupError.textContent = "Error connecting to the server. Please try again later.";
+                signupError.classList.remove("hidden");
+            }
+        });
+
+        // Handle Sign-In
+        document.getElementById("signin-form-validation").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const emailField = document.getElementById("signin-email");
+            if (!emailRegex.test(emailField.value)) {
+                signinError.textContent = "Please enter a valid email address."; // Show validation message
+                signinError.classList.remove("hidden");
+                return;
+            }
+
+            const credentials = {
+                "email": emailField.value,
+                "password": document.getElementById("signin-password").value
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/signin", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(credentials)
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    window.location.href='/dashboard'; // Redirect to dashboard.html
+                } else {
+                    signinError.textContent = result.message || "An unknown error occurred. Please try again.";
+                    signinError.classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error("Error: Unable to connect to the server.");
+                signinError.textContent = "Error connecting to the server. Please try again later.";
+                signinError.classList.remove("hidden");
+            }
+        });
+
+        // Toggle password visibility
+        function togglePasswordVisibility(passwordFieldId, icon) {
+            const passwordField = document.getElementById(passwordFieldId);
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html>

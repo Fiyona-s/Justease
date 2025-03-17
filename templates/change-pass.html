@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustEase - Change Password</title>
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="h-screen flex bg-white font-sans">
+    <div class="flex w-full">
+        <!-- Form container -->
+        <div class="flex flex-col justify-center items-center w-1/2 p-10 bg-white">
+            <h1 class="text-4xl font-bold mb-6 text-secondary"> JustEase</h1>
+            
+            <div class="w-full max-w-md bg-light shadow-lg rounded-lg p-8">
+                <h2 class="text-3xl text-center">Change Password</h2>
+                <p class="text-center text-gray-700 mb-4">Please fill out the form below to change your password.</p>
+                <form id="change-password-form" method="post">
+                    <input type="email" id="change-email" name="email" placeholder="Email" class="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                    <div class="relative mb-4">
+                        <input type="password" id="old-password" name="old-password" placeholder="Old Password" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                        <i class="fas fa-eye-slash absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer" onclick="togglePasswordVisibility('old-password', this)"></i>
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="password" id="new-password" name="new-password" placeholder="New Password" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                        <i class="fas fa-eye-slash absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer" onclick="togglePasswordVisibility('new-password', this)"></i>
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-black" required>
+                        <i class="fas fa-eye-slash absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer" onclick="togglePasswordVisibility('confirm-password', this)"></i>
+                    </div>
+                    <p id="change-message" class="text-red-500 text-sm hidden mt-2"></p> <!-- Error message -->
+                    <button type="submit" class="btn btn-primary w-full mt-4 py-2 rounded-lg transition-transform transform hover:scale-105 hover:text-white">Set Password</button>
+                    <p class="text-gray-600 text-center py-3">Let's
+                        <a href="{{ url_for('login') }}" class="text-blue-500 hover:text-blue-700">Sign in</a> now!
+                    </p>
+                </form>
+            </div>
+        </div>
+        <!-- Image container -->
+        <div class="w-1/2 bg-cover bg-center" style="background-image: url('/static/assets/signin.jpg');"></div>
+    </div>
+
+    <script>
+        // Handle Change Password
+        document.getElementById("change-password-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const oldPassword = document.getElementById("old-password").value;
+            const newPassword = document.getElementById("new-password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+
+            // Clear previous messages
+            const messageElement = document.getElementById("change-message");
+            messageElement.classList.add("hidden");
+            messageElement.classList.remove("text-red-500");
+            messageElement.classList.remove("text-green-500");
+
+            // Validate that old password and new password are not the same
+            if (oldPassword === newPassword) {
+                messageElement.textContent = "Old password and new password cannot be the same.";
+                messageElement.classList.remove("hidden");
+                messageElement.classList.add("text-red-500");
+                return; // Stop form submission
+            }
+
+            // Strong password validation regex
+            const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            // Validate new password strength
+            if (!strongPasswordPattern.test(newPassword)) {
+                messageElement.textContent = "New password must be at least 8 characters long, include uppercase and lowercase letters, a number, and a special character.";
+                messageElement.classList.remove("hidden");
+                messageElement.classList.add("text-red-500");
+                return; // Stop form submission
+            }
+
+            // Validate that new password matches confirm password
+            if (newPassword !== confirmPassword) {
+                messageElement.textContent = "New password and confirm password do not match.";
+                messageElement.classList.remove("hidden");
+                messageElement.classList.add("text-red-500");
+                return; // Stop form submission
+            }
+
+            // Clear error message if validations pass
+            messageElement.classList.add("hidden");
+
+            const passwordData = {
+                "email": document.getElementById("change-email").value,
+                "old-password": oldPassword,
+                "new-password": newPassword
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/change-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(passwordData)
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    messageElement.textContent = "Password changed successfully!";
+                    messageElement.classList.remove("hidden");
+                    messageElement.classList.add("text-green-500");
+                    document.getElementById("change-password-form").reset(); // Reset form
+                } else {
+                    messageElement.textContent = result.message || "An unknown error occurred. Please try again.";
+                    messageElement.classList.remove("hidden");
+                    messageElement.classList.add("text-red-500");
+                }
+            } catch (error) {
+                console.error("Error: Unable to connect to the server.");
+                messageElement.textContent = "Error connecting to the server. Please try again later.";
+                messageElement.classList.remove("hidden");
+                messageElement.classList.add("text-red-500");
+            }
+        });
+
+        // Toggle password visibility
+        function togglePasswordVisibility(passwordFieldId, icon) {
+            const passwordField = document.getElementById(passwordFieldId);
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html>

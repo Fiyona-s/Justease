@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Advisor - Case Files</title>
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 70px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #4B5563;
+        }
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .loading-screen.active {
+            display: flex;
+        }
+        .loading-spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        .card-header {
+            background-color: #938003bd;
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 12px;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-body ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .card-body li {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #4B5563;
+        }
+        .error {
+            color: #e3342f;
+            text-align: center;
+            font-weight: bold;
+        }
+        .pagination-controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .pagination-controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #a89204bd;
+            color: rgb(251, 251, 251);
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        .pagination-controls button:disabled {
+            background-color: #f5ebb2;
+            color: #1e1e1e;
+            cursor: not-allowed;
+        }
+        .pagination-controls button:hover:not(:disabled) {
+            background-color: #917e03fb;
+        }
+        .pagination-info {
+            margin-top: 12px;
+            font-size: 16px;
+            color: #6B7280;
+        }
+        .search-bar {
+            width: 300px;
+            border: 1px solid #917e03a1;
+            border-radius: 5px;
+            padding: 8px 12px;
+            transition: border-color 0.3s;
+        }
+        .search-bar:focus {
+            border-color: #4B5563;
+            outline: none;
+        }
+        /* Sidebar styles */
+        #sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        #sidebar.open {
+            transform: translateX(0);
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
+        }
+        .overlay.active {
+            display: block;
+        }
+        .expanded-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1200px;
+            max-height: 80%;
+            z-index: 1001;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+        }
+        body.no-scroll {
+            overflow: hidden;
+        }
+        .card.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .highlight {
+            background-color: yellow; /* Highlight color */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Header -->
+        <header class="flex justify-between items-center p-4 bg-white shadow-md">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-4xl font-bold text-secondary">JustEase</h1>
+                <!-- Hamburger Menu Icon -->
+                <button id="hamburgerMenu" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex items-center space-x-4">
+                <input type="text" id="search-bar" class="search-bar" placeholder="Search cases..." oninput="searchCases()" />
+            </div>
+        </header>
+        
+       <!-- Sidebar -->
+       <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg">
+        <div class="p-4 border-b">
+            <h3 class="text-lg font-semibold">Menu</h3>
+        </div>
+        <ul class="p-4 space-y-4">
+            <li>
+                <a href="{{ url_for('home') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <i class="fas fa-home text-gray-600"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <i class="fas fa-bars text-gray-600"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('legal_resources') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    <span>Library</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('easbot') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    <span>AI Assistant</span>
+                </a>
+            </li>
+            <li>
+                <a href="templates.html" class="flex items-center space-x-4  p-2 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    <span>Templates</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('news') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    <span>News Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('checklist') }}" class="flex items-center space-x-4  p-2 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    <span>Checklist</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    
+        
+        
+        <!-- Court and Case Files -->
+        <div class="container mx-auto mt-6">
+            <h2 id="court-title" class="text-3xl font-bold text-center mb-8"></h2>
+            <div id="case-files-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div class="pagination-controls ">
+                <button id="back-button" onclick="fetchCourtCases(courtName, currentPage - 1)">Back</button>
+                <button id="next-button" onclick="fetchCourtCases(courtName, currentPage + 1)">Next</button>
+                <div class="pagination-info" id="pagination-info"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/lucide@latest"></script> <!-- Load Lucide Icons -->
+    
+    <script>
+        lucide.createIcons(); // Initialize Lucide Icons
+        
+        // Sidebar functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const loadingScreen = document.getElementById('loadingScreen');
+        
+        hamburgerMenu.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            closeExpandedCard(); // Close the expanded card if overlay is clicked
+        });
+        
+        // Get court name from query parameters
+        const params = new URLSearchParams(window.location.search);
+        const courtName = params.get('court');
+
+        // Pagination state
+        let currentPage = 1;
+        let totalPages = 1;
+        
+        // Update page title and header
+        document.getElementById('court-title').textContent = `${courtName} - Case Files`;
+        
+        // Function to fetch cases
+        function fetchCourtCases(courtName, page = 1) {
+            if (page < 1 || page > totalPages) return;
+
+            const url = `http://127.0.0.1:5000/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
+
+            // Show loading screen
+            loadingScreen.classList.add('active');
+            
+            fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch case files.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                currentPage = data.page;
+                totalPages = data.total_pages;
+                displayCourtCases(data);
+                updatePaginationControls();
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('case-files-container').innerHTML = 
+                `<p class="error">Failed to fetch case files. Please try again later.</p>`;
+            })
+            .finally(() => {
+                // Hide loading screen
+                loadingScreen.classList.remove('active');
+            });
+        }
+
+        // Function to expand the card and show more details
+        function expandCard(card) {
+            const additionalDetails = card.querySelector('.additional-details');
+            const expandedCard = document.querySelector('.expanded-card');
+            
+            if (additionalDetails.style.display === 'none' || additionalDetails.style.display === '') {
+                additionalDetails.style.display = 'block';
+                card.querySelector('button').textContent = 'Show Less Details';
+                
+                // Move the card to the center and blur background
+                expandedCard.innerHTML = card.innerHTML;
+                expandedCard.style.display = 'block';
+                document.getElementById('overlay').classList.add('active');
+                document.body.classList.add('no-scroll');
+                disableBackgroundCards(); // Disable background card interactions
+            } else {
+                additionalDetails.style.display = 'none';
+                card.querySelector('button').textContent = 'Show More Details';
+                closeExpandedCard();
+            }
+        }
+        // Function to close the expanded card
+        function closeExpandedCard() {
+            const expandedCard = document.querySelector('.expanded-card');
+            expandedCard.style.display = 'none';
+            document.getElementById('overlay').classList.remove('active');
+            document.body.classList.remove('no-scroll');
+            enableBackgroundCards(); // Enable background card interactions
+
+            // Reset any additional display properties in the cards
+            const caseCards = document.querySelectorAll('.card');
+            caseCards.forEach(card => {
+                const additionalDetails = card.querySelector('.additional-details');
+                if (additionalDetails) {
+                    additionalDetails.style.display = 'none'; // Hide additional details
+                    card.querySelector('button').textContent = 'Show More Details'; // Reset button text
+                }
+            });
+        }
+
+        // Function to disable background card interactions
+        function disableBackgroundCards() {
+            const caseCards = document.querySelectorAll('.card');
+            caseCards.forEach(card => {
+                card.classList.add('disabled');
+            });
+        }
+        
+        // Function to enable background card interactions
+        function enableBackgroundCards() {
+            const caseCards = document.querySelectorAll('.card');
+            caseCards.forEach(card => {
+                card.classList.remove('disabled');
+            });
+        }
+        
+        // Function to highlight search keywords
+        function highlightKeywords(text, keywords) {
+            if (!keywords) return text; // No keywords to highlight
+            const regex = new RegExp(`(${keywords})`, 'gi'); // Case-insensitive regex
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Function to display case files in cards with keyword highlighting
+        function displayCourtCases(data) {
+            const container = document.getElementById('case-files-container');
+            container.innerHTML = '';
+            
+            const searchTerm = document.getElementById('search-bar').value.trim(); // Get current search term
+
+            if (data && data.laws.length > 0) {
+                data.laws.forEach(law => {
+                    const caseCard = document.createElement('div');
+                    caseCard.classList.add('card');
+
+                    const details = [
+                        `<li><strong>Court Name:</strong> ${highlightKeywords(law.court_name, searchTerm)}</li>`,
+                        `<li><strong>Case Name:</strong> ${highlightKeywords(law.case_data.case_name, searchTerm)}</li>`,
+                        `<li><strong></strong> ${highlightKeywords(law.case_data.bench, searchTerm)}</li>`,
+                        `<li><strong>Issue:</strong> ${highlightKeywords(law.case_data.issue, searchTerm)}</li>`,
+                        `<li><strong>Petitioners Argument:</strong> ${highlightKeywords(law.case_data.petitioners_argument, searchTerm)}</li>`,
+                        `<li><strong>Respondents Argument:</strong> ${highlightKeywords(law.case_data.respondents_argument, searchTerm)}</li>`,
+                        `<li><strong>Court Reasoning:</strong> ${highlightKeywords(law.case_data.court_reasoning, searchTerm)}</li>`,
+                        `<li><strong>Conclusion:</strong> ${highlightKeywords(law.case_data.conclusion, searchTerm)}</li>`
+                    ];
+
+                    caseCard.innerHTML = 
+                        `<div class="card-header">
+                            ${law.law_name}
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                ${details.slice(0, 3).join('')}
+                            </ul>
+                            ${details.length > 3 ? 
+                            `<button onclick="expandCard(this.parentElement.parentElement); event.stopPropagation();" 
+                            class="mt-4 text-blue-500 hover:text-blue-700">
+                            Show More Details
+                            </button>
+                            <div class="additional-details" style="display: none;">
+                                <ul>
+                                    ${details.slice(3).join('')}
+                                </ul>
+                            </div>` : ''}
+                        </div>`;
+                    
+                    container.appendChild(caseCard);
+                });
+            } else {
+                container.innerHTML = '<p class="error">No case files found for this court.</p>';
+            }
+        }
+
+        // Function to update pagination controls
+        function updatePaginationControls() {
+            document.getElementById('back-button').disabled = currentPage <= 1;
+            document.getElementById('next-button').disabled = currentPage >= totalPages;
+            document.getElementById('pagination-info').textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+        
+        // Function to fetch cases based on search input
+        function fetchSearchResults(searchTerm, page = 1) {
+            const url = `http://127.0.0.1:5000/laws/search?query=${encodeURIComponent(searchTerm)}&page=${page}&limit=5`;
+
+            fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch search results.');
+                return response.json();
+            })
+            .then(data => {
+                currentPage = data.page;
+                totalPages = data.total_pages;
+                displayCourtCases(data);
+                updatePaginationControls();
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('case-files-container').innerHTML = `<p class="error">Failed to fetch search results. Please try again later.</p>`;
+            });
+        }
+
+        // Function to search cases based on input
+        function searchCases() {
+            const searchTerm = document.getElementById('search-bar').value.trim();
+            const courtTitle = document.getElementById('court-title');
+            if (searchTerm) {
+                courtTitle.textContent = ''; // Remove the heading when searching
+                fetchSearchResults(searchTerm); // Fetch search results
+            } else {
+                courtTitle.textContent = `${courtName} - Case Files`; // Restore the heading when fetching default cases
+                fetchCourtCases(courtName); // Fetch default court cases
+            }
+        }
+
+        // Fetch cases for the selected court
+        if (courtName) {
+            fetchCourtCases(courtName);
+        } else {
+            document.getElementById('case-files-container').innerHTML = 
+            `<p class="error">No court selected. Please go back and choose a court.</p>`;
+        }
+    </script>
+
+    <!-- Expanded Card -->
+    <div class="expanded-card" id="expandedCard">
+        <button onclick="closeExpandedCard()" class="absolute top-2 right-2 text-red-500">Close</button>
+    </div>
+</div>
+</body>
+</html>

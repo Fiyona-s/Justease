@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/aistyle.css">
+    <title>Legal Chatbot</title>
+    <style>
+        .sidebar {
+            width: 250px; /* Set width of the sidebar */
+            background-color: #f8f9fa; /* Sidebar background color */
+            padding: 20px; /* Padding around sidebar content */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+            position: fixed; /* Make sidebar fixed */
+            height: 100%; /* Full height */
+        }
+
+        .sidebar__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar__button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sidebar__nav {
+            margin-top: 20px;
+        }
+
+        .sidebar__link {
+            display: flex;
+            align-items: center;
+            padding: 10px 0; /* Padding around each link */
+            color: #333; /* Link color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .sidebar__link:hover {
+            color: #007bff; /* Change color on hover */
+        }
+
+        .sidebar__link i {
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        .main-content {
+            margin-left: 250px; /* Adjust for fixed sidebar */
+            padding: 20px; /* Add padding */
+            flex-grow: 1; /* Take up remaining space */
+        }
+
+        .chats {
+            max-height: 400px; /* Set a max height for scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 20px; /* Space between chat and prompt */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar__left">
+            <button class="navbar__button" id="sidebarToggle">
+                <i class='bx bx-menu'></i>
+            </button>
+            <h3 class="navbar__logo">Ai Chat Assistant</h3>
+        </div>
+        
+    </nav>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+           <!-- <button class="sidebar__button" id="newChatButton">
+                <i class='bx bx-plus'></i> New Chat
+            </button>-->
+        </div>
+        <nav class="sidebar__nav">
+            <a href="{{ url_for('home') }}" class="sidebar__link p-2 rounded">
+                <i class="bx bx-home text-gray-600"></i> Home
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="sidebar__link">
+                <i class='bx bx-menu'></i> Dashboard
+            </a>
+            <a href="{{ url_for('legal_resources')}}" class="sidebar__link">
+                <i class='bx bx-right-arrow-alt'></i> Library
+            </a>
+            <a href="{{ url_for('lawyer_finder') }}" class="sidebar__link">
+                <i class='bx bx-right-arrow-alt'></i> Lawyer Finder
+            </a>
+            <a href="{{ url_for('doc') }}" class="sidebar__link">
+                <i class='bx bx-right-arrow-alt'></i> Templates
+            </a>
+            <a href="{{ url_for('news') }}" class="sidebar__link">
+                <i class='bx bx-right-arrow-alt'></i> News Updates
+            </a>
+            <a href="{{ url_for('checklist') }}" class="sidebar__link">
+                <i class='bx bx-right-arrow-alt'></i> Checklist
+            </a>
+        </nav>
+    </aside>
+    
+    <main class="main-content">
+        <header class="header">
+            <div class="header__title">
+                <h1>Hello, There! How can I assist you with corporate law today?</h1>
+            </div>
+            <div class="suggests">
+                <div class="suggests__item">
+                    <p class="suggests__item-text">What is the process for company incorporation?</p>
+                    <div class="suggests__item-icon">
+                        <i class='bx bx-building'></i>
+                    </div>
+                </div>
+                <div class="suggests__item">
+                    <p class="suggests__item-text">What are the duties of a company director?</p>
+                    <div class="suggests__item-icon">
+                        <i class='bx bx-user'></i>
+                    </div>
+                </div>
+                <div class="suggests__item">
+                    <p class="suggests__item-text">How to file annual returns for a company?</p>
+                    <div class="suggests__item-icon">
+                        <i class='bx bx-file'></i>
+                    </div>
+                </div>
+                <div class="suggests__item">
+                    <p class="suggests__item-text">What are the key features of the Companies Act 2013?</p>
+                    <div class="suggests__item-icon">
+                        <i class='bx bx-book'></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <section class="chats" id="chatContainer"></section>
+    
+        <section class="prompt">
+            <form class="prompt__form" novalidate id="chatForm">
+                <div class="prompt__input-wrapper">
+                    <textarea 
+                        class="prompt__form-input" 
+                        placeholder="Ask something about corporate law..." 
+                        rows="1"
+                        required
+                    ></textarea>
+                    <button type="submit" class="prompt__form-button" id="sendButton">
+                        <i class='bx bx-send'></i>
+                    </button>
+                    <button type="button" class="prompt__form-button" id="deleteButton">
+                        <i class='bx bx-trash'></i>
+                    </button>
+                </div>
+            </form>
+            <p class="prompt__disclaim">
+                This chat assistant provides information related to corporate law in India. For specific legal advice, consult a qualified professional.
+            </p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="/static/js/aiscript.js"></script>
+
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Handle the chat input
+            const input = document.querySelector('.prompt__form-input');
+            const message = input.value;
+
+            // Append the message to the chat container
+            if (message) {
+                const chatMessage = document.createElement('div');
+                chatMessage.textContent = message;
+                chatMessage.className = 'chat-message'; // Add a class for styling
+                document.getElementById('chatContainer').appendChild(chatMessage);
+                input.value = ''; // Clear the input
+
+                // Scroll to the bottom of the chat container
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the latest message
+            }
+        });
+
+        // New event listener for Enter key in textarea
+        document.querySelector('.prompt__form-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent new line
+                document.getElementById('chatForm').dispatchEvent(new Event('submit')); // Trigger the submit event
+            }
+        });
+
+        // Existing delete button functionality
+        document.getElementById('deleteButton').addEventListener("click", () => {
+            if (confirm("Are you sure you want to clear all chats?")) {
+                // Clearing the chat UI
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.innerHTML = ""; 
+
+                // Adding a new chat message
+                const newChatMessage = document.createElement('div');
+                newChatMessage.className = 'chat-message bot';
+                newChatMessage.textContent = "Hello! I am a legal advisor chat assistant specialized in corporate law in India. Please feel free to ask me any questions related to the Companies Act 2013, corporate governance, compliance, and related legal matters.";
+                chatContainer.appendChild(newChatMessage);
+            }
+        });
+    </script>
+</body>
+</html>

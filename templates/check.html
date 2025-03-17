@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/final/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/final/static/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: rgba(227, 233, 243, 0.7);
+            color: rgb(64, 64, 64);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #917e03c9;
+            margin-bottom: 20px;
+            font-size: 32px; /* Increased font size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .travel-details {
+            margin-bottom: 20px;
+        }
+
+        .travel-details label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .travel-details input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .customization {
+            margin-top: 20px;
+        }
+
+        .customization label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .customization input {
+            width: calc(100% - 120px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .customization button {
+            padding: 10px;
+            background-color: #917e03c9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .customization button:hover {
+            background-color: #7a6603;
+        }
+
+        .checklist-category {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns */
+            gap: 10px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f8ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            transform: scale(1.02);
+        }
+
+        .checklist-item .tick {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .checklist-item .tick.default {
+            background-color: #1964c5c9;
+            color: white;
+        }
+
+        .checklist-item .tick.selected {
+            background-color: #28a745;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        #sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        #sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+        
+        <!-- Header -->
+        <header id="header" class="flex justify-between items-center p-4 bg-white shadow-md">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-4xl font-bold text-secondary">JustEase</h1>
+                <button id="hamburgerMenu" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg">
+            <div class="p-4 border-b">
+                <h3 class="text-lg font-semibold">Menu</h3>
+            </div>
+            <ul class="p-4 space-y-4">
+                <li>
+                    <a href="{{ url_for('home') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <i class="fas fa-home text-gray-600"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <i class="fas fa-bars text-gray-600"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('legal_resources') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                        </svg>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('easbot') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                        </svg>
+                        <span>AI Assistant</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('news') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                        </svg>
+                        <span>News Updates</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('doc') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                        </svg>
+                        <span>Document Templates</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('checklist') }}" class="flex items-center space-x-4 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                        </svg>
+                        <span>Checklist</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="container">
+            <h1>📝 Legal Documents Checklist</h1>
+
+            <!-- Date Input -->
+            <div class="travel-details">
+                <label for="destination">Enter The Document Name:</label>
+                <input type="text" id="destination" placeholder="Enter">
+
+                <label for="travelDate">Select Date:</label>
+                <input type="date" id="travelDate" min="">
+            </div>
+
+            <!-- Customization Section for Document Requirements -->
+            <div class="customization">
+                <label for="prompt">Enter Document Requirements:</label>
+                <input type="text" id="prompt" placeholder="Enter your prompt here...">
+                <button onclick="generateChecklist()">Generate Checklist</button>
+            </div>
+
+            <!-- Customization Section for Adding New Items -->
+            <div class="customization">
+                <label for="newItem">Add New Checklist Item:</label>
+                <input type="text" id="newItem" placeholder="Enter item name">
+                <button onclick="addNewItem()">Add</button>
+            </div>
+
+            <!-- Original Checklist -->
+            <div class="checklist-category">Supporting Documents</div>
+            <div id="checklist" class="checklist-items"></div>
+
+            <!-- Selected Items Section -->
+            <div class="checklist-category">Selected Items</div>
+            <div id="selectedList" class="checklist-items"></div>
+
+            <!-- Download Button -->
+            <button id="downloadBtn" onclick="downloadPDF()" disabled style="margin-top: 20px; padding: 10px; background-color: #917e03c9; color: white; border: none; border-radius: 5px; cursor: pointer;">Download Selected as PDF</button>
+        </div>
+
+        <script src="../script/scripts.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script> <!-- Load Lucide Icons -->
+        <script>
+            // DOM Elements
+            const checklistContainer = document.getElementById("checklist");
+            const selectedListContainer = document.getElementById("selectedList");
+            const travelDateInput = document.getElementById("travelDate");
+            const downloadBtn = document.getElementById("downloadBtn");
+            const destinationInput = document.getElementById("destination");
+
+            let selectedItems = [];
+
+            // Predefined Checklist Items
+            let checklistItems = [
+                "Identity and Address Proof of the Applicant",
+                "PAN Card",
+                "Aadhaar Card",
+                "Passport",
+                "Certificate of Incorporation",
+                "Voter ID", 
+                "Electricity Bill / Water Bill / Property Tax Receipt",
+                "Passbook Copy / Bank Statement",
+                "Passport-size photo",
+                "Rent Agreement & NOC",
+                "Ownership Document",
+                "Birth certificate"
+            ];
+
+            // Set Minimum Date for Travel Date Input
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            travelDateInput.min = `${yyyy}-${mm}-${dd}`;
+
+            // Render the Checklist
+            function renderChecklist() {
+                checklistContainer.innerHTML = "";
+                checklistItems.forEach((item, index) => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "checklist-item";
+
+                    itemDiv.innerHTML = `
+                        <span>${item}</span>
+                        <div class="tick default" onclick="selectItem(${index})">✔</div>
+                    `;
+
+                    checklistContainer.appendChild(itemDiv);
+                });
+            }
+
+            // Render the Selected Items
+            function renderSelectedList() {
+                selectedListContainer.innerHTML = "";
+                selectedItems.forEach((item, index) => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "checklist-item";
+
+                    itemDiv.innerHTML = `
+                        <span>${item}</span>
+                        <div class="tick selected" onclick="unselectItem(${index})">✔</div>
+                    `;
+
+                    selectedListContainer.appendChild(itemDiv);
+                });
+
+                // Enable or disable the download button
+                downloadBtn.disabled = selectedItems.length === 0;
+            }
+
+            // Move Item to Selected List
+            function selectItem(index) {
+                const item = checklistItems.splice(index, 1)[0];
+                selectedItems.push(item);
+
+                renderChecklist();
+                renderSelectedList();
+            }
+
+            // Move Item Back to Original List
+            function unselectItem(index) {
+                const item = selectedItems.splice(index, 1)[0];
+                checklistItems.push(item);
+
+                renderChecklist();
+                renderSelectedList();
+            }
+
+            // Add New Item to Checklist
+            function addNewItem() {
+                const newItemInput = document.getElementById("newItem");
+                const newItem = newItemInput.value.trim();
+
+                if (newItem) {
+                    checklistItems.push(newItem);
+                    newItemInput.value = "";
+                    renderChecklist();
+                }
+            }
+
+            // Download Selected Items as PDF
+            function downloadPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const destination = destinationInput.value || "Documents";
+                doc.setFontSize(12);
+                doc.text(`Supporting Documents Required for: ${destination}`, 10, 10);
+                selectedItems.forEach((item, index) => {
+                    doc.text(`${index + 1}. ${item}`, 10, 20 + (10 * index)); // Added checkbox entity
+                });
+
+                doc.save("selected_documents.pdf");
+            }
+
+            // Initialize the Checklist
+            renderChecklist();
+            renderSelectedList();
+
+            // Overlay functionality
+            const overlay = document.getElementById('overlay');
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const sidebar = document.getElementById('sidebar');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+
+            // Generate checklist based on user input
+            function generateChecklist() {
+                const promptInput = document.getElementById("prompt").value;
+                const newItems = promptInput.split(',').map(item => item.trim()).filter(item => item && !item.includes('[') && !item.includes(']')); // Exclude items in brackets
+                checklistItems = [...new Set([...checklistItems, ...newItems])]; // Avoid duplicates
+                renderChecklist();
+            }
+
+            // Call the functions on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                renderChecklist();
+                renderSelectedList();
+            });
+        </script>
+    </div>
+</body>
+</html>
