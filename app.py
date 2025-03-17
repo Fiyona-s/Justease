@@ -195,7 +195,7 @@ def profile():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()
-    return render_template('logout.html')
+    return redirect(url_for('login'))
 
     
 # Endpoint to fetch corporate law news

@@ -8,26 +8,28 @@
     <script>
         // Function to handle logout
         async function handleLogout() {
-            try {
-                const response = await fetch(`/logout`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include"  // Include cookies
-                });
+    try {
+        const response = await fetch(`/logout`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include"  // Include cookies for session
+        });
 
-                if (!response.ok) {
-                    throw new Error(`Logout failed: ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                console.log(data.message);  // Debugging/logging
-                alert("Logout successful!");
-                window.location.href = "/login";  // Redirect to login page
-            } catch (error) {
-                console.error("Error logging out:", error);
-                alert("Error logging out. Please try again.");
-            }
+        if (!response.ok) {
+            throw new Error(`Logout failed: ${response.statusText}`);
         }
+
+        const data = await response.json();  // Convert response to JSON
+        console.log(data.message);  // Debugging/logging
+
+        alert("Logout successful!");
+        window.location.href = "/login";  // Redirect to login page
+    } catch (error) {
+        console.error("Error logging out:", error);
+        alert("Error logging out. Please try again.");
+    }
+}
+
 
         // Automatically call handleLogout when the page loads
         window.onload = handleLogout;
