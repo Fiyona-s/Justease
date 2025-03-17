@@ -641,6 +641,7 @@ def get_selected_items():
             return jsonify({"selectedItems": selected_items}), 200
 
     return jsonify({"selectedItems": []}), 200
+import os
 
 if __name__ == '__main__':
     app.secret_key = 'alwin123123'
