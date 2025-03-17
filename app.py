@@ -192,11 +192,11 @@ def profile():
         )
     return redirect(url_for('login'))
 
-# Route to handle the logout action
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.clear()  # Clear the entire session
+    session.clear()
     return render_template('logout.html')
+
     
 # Endpoint to fetch corporate law news
 @app.route('/corporate-law-news', methods=['GET'])
