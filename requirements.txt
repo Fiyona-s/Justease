@@ -1,0 +1,9 @@
+Flask
+requests
+flask-cors
+flask-session
+pymongo
+Werkzeug
+gunicorn
+python-dotenv
+gridfs
