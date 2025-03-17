@@ -93,29 +93,21 @@ def track_page_visits():
 # Endpoints
 @app.route('/')
 def home():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
-    return render_template('home.html')
+        return render_template('index.html')  # Make sure this file exists in "templates/"
 
 
 @app.route('/login')
 def login():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('login.html')
 
 # Endpoint for the cases page
 @app.route('/cases')
 def cases():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('cases.html')
 
 # Endpoint for the change password page
 @app.route('/change-password')
 def change_password_page():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('change-pass.html')
 
 @app.route('/dashboard')
@@ -129,54 +121,39 @@ def dashboard():
 
     # Fetch the user's data from the users collection
     user = users_collection.find_one({"_id": user_id})
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
+
     # Render the dashboard template and pass the user object
     return render_template('dashboard.html', user=user)
 
 # Endpoint for the easbot page
 @app.route('/easbot')
 def easbot():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('easbot.html')
 
 @app.route('/lawyer-finder')
 def lawyer_finder():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('lawyer-finder.html')
 
 # Endpoint for the legal resources page
 @app.route('/legal-resource')
 def legal_resources():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('legal-resource.html')
 
 # Endpoint for the news page
 @app.route('/news')
 def news():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('news.html')
 
 # Endpoint for the doc page
 @app.route('/doc')
 def doc():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('doc.html')
 
 
 # Endpoint for the checklist page
 @app.route('/checklist')
 def checklist():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('checklist.html')
-
-
 
 
 # Endpoint for the profile page
@@ -213,20 +190,13 @@ def profile():
             visited_pages=session_data.get("visited_pages", []),
             preferences=session_data.get("preferences", {})
         )
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
+    return redirect(url_for('login'))
 
-
-from flask import jsonify
-
+# Route to handle the logout action
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)  # Remove session data
-    response = jsonify({"message": "Logout successful"})
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    return response
-
+    session.clear()  # Clear the entire session
+    return jsonify({"message": "Logout successful"}), 200
     
 # Endpoint to fetch corporate law news
 @app.route('/corporate-law-news', methods=['GET'])
