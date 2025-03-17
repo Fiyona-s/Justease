@@ -176,11 +176,7 @@ def checklist():
         return redirect(url_for('login'))  # Redirect if not logged in
     return render_template('checklist.html')
 
-@app.route('/logout')
-def logout():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
-    return render_template('logout.html')
+
 
 
 # Endpoint for the profile page
