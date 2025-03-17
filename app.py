@@ -646,10 +646,10 @@ def get_selected_items():
     return jsonify({"selectedItems": []}), 200
 import os
 
+app.secret_key = 'alwin123123'  # Move this to the top
+app.config['SESSION_TYPE'] = 'filesystem'
+
 if __name__ == '__main__':
-    app.secret_key = 'alwin123123'
-    app.config['SESSION_TYPE'] = 'filesystem'
-    
     # Get the port dynamically assigned by Render, default to 10000
     port = int(os.environ.get("PORT", 10000))  
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)  # Missing parenthesis fixed)
