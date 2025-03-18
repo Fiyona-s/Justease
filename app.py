@@ -319,7 +319,31 @@ def change_password():
     email = data.get('email')
     old_password = data.get('old-password')
     new_password = data.get('new-password')
-    confirm_password = data.get('confirm-password')
+    
+    # Find the user in the database
+    user = db.users.find_one({"email": email})
+    
+    # Check if user exists
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    # Verify old password matches stored password
+    if not check_password_hash(user['password'], old_password):
+        return jsonify({"message": "Incorrect old password"}), 401
+    
+    # Hash the new password
+    hashed_new_password = generate_password_hash(new_password)
+    
+    # Update the password in the database
+    result = db.users.update_one(
+        {"email": email},
+        {"$set": {"password": hashed_new_password}}
+    )
+    
+    if result.modified_count == 1:
+        return jsonify({"message": "Password changed successfully"}), 200
+    else:
+        return jsonify({"message": "Error updating password"}), 500
 
     
 
