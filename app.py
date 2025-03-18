@@ -62,6 +62,20 @@ def upload_pdf(file_path):
     except Exception as e:
         print(f"Error saving PDF: {e}")
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    """Endpoint to upload a PDF file."""
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file and file.filename.endswith('.pdf'):
+        file_path = os.path.join(PDF_FOLDER, file.filename)
+        file.save(file_path)  # Save the file to the PDF_FOLDER
+        return jsonify({"message": "File uploaded successfully"}), 201
+    return jsonify({"error": "Invalid file format"}), 400
+
 @app.route('/pdf/<filename>', methods=['GET'])
 def get_pdf(filename):
     """Fetch a PDF file from the local `static/pdf/` folder."""
@@ -74,10 +88,6 @@ def get_pdf(filename):
             return jsonify({"error": "File not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
-
 # Track Page Visits
 
 @app.before_request
