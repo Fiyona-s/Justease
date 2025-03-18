@@ -56,6 +56,18 @@
         .container {
             margin-top: 110px; /* Space for navbar */
         }
+        <style>
+    /* Add this to your existing styles */
+    #sidebar {
+        z-index: 99;
+        top: 0;
+        padding-top: 60px; /* Create space for header */
+    }
+    
+    header {
+        z-index: 100; /* Make header appear above sidebar */
+    }
+</style>
     </style>
 </head>
 
@@ -73,7 +85,67 @@
                 </button>
             </div>
         </header>
+<!-- Sidebar -->
+<div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg">
+    <div class="p-4 border-b">
+        <h3 class="text-lg font-semibold">Menu</h3>
+    </div>
+    <ul class="p-4 space-y-4">
+        <li>
+            <a href="{{ url_for('home') }}" class="flex items-center space-x-4  p-2 rounded">
+                <i class="fas fa-home text-gray-600"></i>
+                <span>Home</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-4  p-2 rounded">
+                <i class="fas fa-bars text-gray-600"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('legal_resources') }}" class="flex items-center space-x-4  p-2 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                </svg>
+                <span>Library</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('easbot') }}" class="flex items-center space-x-4  p-2 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                </svg>
+                <span>AI Assistant</span>
+            </a>
+        </li>
 
+        <li>
+            <a href="{{ url_for('news') }}" class="flex items-center space-x-4  p-2 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                </svg>
+                <span>News Updates</span>
+            </a>
+        </li>
+        <li>
+        <a href="{{ url_for('lawyer_finder') }}" class="flex items-center space-x-4  p-2 rounded">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                       </svg>
+                       <span>Document Templates</span>
+                   </a>
+        </li>
+        <li>
+            <a href="{{ url_for('checklist') }}" class="flex items-center space-x-4  p-2 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                </svg>
+                <span>Checklist</span>
+            </a>
+        </li>
+    </ul>
+</div>
         <div class="container">
 
             <!-- Upload PDF Section -->
@@ -164,6 +236,32 @@
                 });
             });
 
+            document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const sidebar = document.getElementById('sidebar');
+    
+    // Initially hide the sidebar
+    sidebar.style.transform = 'translateX(-100%)';
+    sidebar.style.transition = 'transform 0.3s ease';
+    sidebar.style.zIndex = '99'; // Make sure sidebar is below header
+    
+    // Toggle sidebar when hamburger is clicked
+    hamburgerMenu.addEventListener('click', function(event) {
+        event.stopPropagation(); // Stop click from propagating to document
+        if (sidebar.style.transform === 'translateX(0px)') {
+            sidebar.style.transform = 'translateX(-100%)';
+        } else {
+            sidebar.style.transform = 'translateX(0)';
+        }
+    });
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!sidebar.contains(event.target) && event.target !== hamburgerMenu) {
+            sidebar.style.transform = 'translateX(-100%)';
+        }
+    });
+});
             // Handle PDF upload
             document.getElementById('uploadForm').addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
