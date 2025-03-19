@@ -6,7 +6,6 @@
     <title>Corporate Law News</title>
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-    
 
       <!-- Google Web Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -245,7 +244,7 @@
         <!-- News Section -->
         <div class="content" id="content">
             <div class="container">
-                <h1 class="fs-2">Corporate Law News</h1>
+                <h1 class="fs-2" style="color: #a89204e6;margin-bottom: 20px;">Corporate Law News</h1>
                 <div class="news-grid" id="news-container"></div>
                 <div class="error" id="error-message"></div>
             </div>
@@ -257,7 +256,7 @@
             showLoading(); // Show loading overlay
 
             try {
-                const response = await fetch('https://Justease.onrender.com/corporate-law-news', {
+                const response = await fetch('http://localhost:5000/corporate-law-news', {
                     method: 'GET',
                     headers: {
                         'X-Api-Key': '8bfe418c7d034af5b101ef0b5263b303'

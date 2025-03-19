@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/static/css/aistyle.css">
@@ -44,7 +43,7 @@
         }
 
         .sidebar__link:hover {
-            color: #007bff; /* Change color on hover */
+            color: #917e03fb; /* Change color on hover */
         }
 
         .sidebar__link i {
@@ -65,21 +64,20 @@
     </style>
 </head>
 <body>
+    
     <nav class="navbar">
         <div class="navbar__left">
             <button class="navbar__button" id="sidebarToggle">
                 <i class='bx bx-menu'></i>
             </button>
-            <h3 class="navbar__logo">Ai Chat Assistant</h3>
+            <h2 class="navbar__logo" style="color: #a89204e6;">Justease's Ai Chat Assistant</h2>
         </div>
         
     </nav>
     
     <aside class="sidebar" id="sidebar">
         <div class="sidebar__header">
-           <!-- <button class="sidebar__button" id="newChatButton">
-                <i class='bx bx-plus'></i> New Chat
-            </button>-->
+           
         </div>
         <nav class="sidebar__nav">
             <a href="{{ url_for('home') }}" class="sidebar__link p-2 rounded">

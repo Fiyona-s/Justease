@@ -6,7 +6,6 @@
     <title>Legal Resource Library</title>
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-    
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -91,7 +90,7 @@
         }
         .container {
             
-            margin-top: 100px; /* Space for navbar */
+            margin-top: 120px; /* Space for navbar */
         }
 
     </style>
@@ -123,7 +122,7 @@
             </div>
             <ul class="p-4 space-y-4">
                 <li>
-                    <a href="{{ url_for('home') }}" class="flex items-center space-x-4  p-2 rounded">
+                  <a href="{{ url_for('home') }}" class="flex items-center space-x-4  p-2 rounded">
                         <i class="fas fa-home text-gray-600"></i>
                         <span>Home</span>
                     </a>
@@ -180,7 +179,8 @@
                 </li>
             </ul>
         </div>
-    <div class="Container">
+        
+    <div class="container">
         <!-- Description Section -->
         <div class="description-container container mx-auto mt-10 p-4 bg-white shadow-md rounded-lg" style="width: 1500px;">
             <div class="flex flex-col md:flex-row items-center" onload="fadeIn()">
@@ -198,7 +198,7 @@
 
         <!-- High Courts Section -->
 <h3 class="text-center text-3xl font-semibold text-secondary my-6">All High Courts</h3>
-<div class="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 pb-8">
+<div class="container1 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 pb-8">
     <!-- High Court Cards -->
     <a href="{{ url_for('cases') }}?court=Delhi" class="court-button text-center bg-white p-4 rounded-lg shadow-md">
         <img src="/static/assets/court.png" alt="Delhi High Court" class="mx-auto w-12 h-12 mb-2">
@@ -282,30 +282,6 @@
     </a>
 </div>
 </div>
-        
-        <!-- Drawer -->
-        <div id="drawer" class="drawer fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform translate-x-full">
-            <div class="p-4 border-b">
-                <h3 class="text-lg font-semibold">Account</h3>
-            </div>
-            <ul class="p-4 space-y-4">
-                <!-- My Profile -->
-                <li class="flex items-center space-x-4">
-                    <i data-lucide="user" class="w-6 h-6 text-gray-600"></i>
-                    <span>My Profile</span>
-                </li>
-                <!-- Change Password -->
-                <li class="flex items-center space-x-4">
-                    <i data-lucide="key" class="w-6 h-6 text-gray-600"></i>
-                    <span>Change Password</span>
-                </li>
-                <!-- Logout -->
-                <li class="flex items-center space-x-4">
-                    <i data-lucide="log-out" class="w-6 h-6 text-gray-600"></i>
-                    <span>Logout</span>
-                </li>
-            </ul>
-        </div>
         
         <!-- JavaScript -->
         <script src="../script/scripts.js"></script>

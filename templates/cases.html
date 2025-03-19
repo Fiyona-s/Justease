@@ -6,7 +6,6 @@
     <title>Legal Advisor - Case Files</title>
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-    
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -25,16 +24,29 @@
     <link href="lib/animate/animate.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="astatic/css/style.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin-top: 70px;
             background-color: #f9f9f9;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         h1 {
             text-align: center;
@@ -80,8 +92,8 @@
             transform: translateY(-3px);
         }
         .card-header {
-            background-color: #938003bd;
-            border-radius: 12px;
+            background-color: #a89204bd;
+            border-radius: 4px;
             color: #ffffff;
             padding: 12px;
             font-size: 1.25rem;
@@ -334,7 +346,7 @@
         function fetchCourtCases(courtName, page = 1) {
             if (page < 1 || page > totalPages) return;
 
-            const url = `https://Justease.onrender.com/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
+            const url = `http://127.0.0.1:5000/laws/highcourt/${encodeURIComponent(courtName)}?page=${page}&limit=5`;
 
             // Show loading screen
             loadingScreen.classList.add('active');
@@ -485,7 +497,7 @@
         
         // Function to fetch cases based on search input
         function fetchSearchResults(searchTerm, page = 1) {
-            const url = `https://Justease.onrender.com/laws/search?query=${encodeURIComponent(searchTerm)}&page=${page}&limit=5`;
+            const url = `http://127.0.0.1:5000/laws/search?query=${encodeURIComponent(searchTerm)}&page=${page}&limit=5`;
 
             fetch(url)
             .then(response => {
