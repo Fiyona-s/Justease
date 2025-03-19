@@ -63,9 +63,6 @@
     </div>
 
     <script>
-        if (!sessionStorage.getItem("loggedIn")) {
-                window.location.href = "/login";  // Redirect if not logged in
-            }
         // Handle Change Password
         document.getElementById("change-password-form").addEventListener("submit", async function(event) {
             event.preventDefault();

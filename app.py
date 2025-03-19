@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import requests
 from flask_cors import CORS
+from flask_session import Session  # Import Flask-Session
 from flask import send_file
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -87,8 +88,6 @@ def get_pdf(filename):
             return jsonify({"error": "File not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-
 # Track Page Visits
 
 @app.before_request
@@ -104,7 +103,6 @@ def track_page_visits():
 # Endpoints
 @app.route('/')
 def home():
-        
         return render_template('index.html')  # Make sure this file exists in "templates/"
 
 
@@ -204,11 +202,11 @@ def profile():
         )
     return redirect(url_for('login'))
 
-# Route to handle the logout action
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.clear()  # Clear the entire session
-    return jsonify({"message": "Logout successful"}), 200
+    session.clear()
+    return redirect(url_for('login'))
+
     
 # Endpoint to fetch corporate law news
 @app.route('/corporate-law-news', methods=['GET'])
@@ -321,7 +319,31 @@ def change_password():
     email = data.get('email')
     old_password = data.get('old-password')
     new_password = data.get('new-password')
-    confirm_password = data.get('confirm-password')
+    
+    # Find the user in the database
+    user = db.users.find_one({"email": email})
+    
+    # Check if user exists
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    # Verify old password matches stored password
+    if not check_password_hash(user['password'], old_password):
+        return jsonify({"message": "Incorrect old password"}), 401
+    
+    # Hash the new password
+    hashed_new_password = generate_password_hash(new_password)
+    
+    # Update the password in the database
+    result = db.users.update_one(
+        {"email": email},
+        {"$set": {"password": hashed_new_password}}
+    )
+    
+    if result.modified_count == 1:
+        return jsonify({"message": "Password changed successfully"}), 200
+    else:
+        return jsonify({"message": "Error updating password"}), 500
 
     
 
@@ -340,18 +362,17 @@ def change_password():
     )
 
     return jsonify({"message": "Password changed successfully"}), 200
-
 # Contact Form Submission
 @app.route('/contact', methods=['POST'])
 def contact():
     data = request.get_json()
-    print("Received data:", data)  # Debugging line
     first_name = data.get('firstName')
     last_name = data.get('lastName')
     email = data.get('email')
     phone = data.get('phone', '')  # Optional field
     message = data.get('message')
 
+    # Check for required fields
     if not first_name or not last_name or not email or not message:
         return jsonify({"message": "All required fields must be filled!"}), 400
 
@@ -367,7 +388,6 @@ def contact():
         contacts_collection.insert_one(contact_data)  # Store data in MongoDB
         return jsonify({"message": "Message sent successfully!"}), 201
     except Exception as e:
-        print("Error inserting data:", e)  # Debugging line
         return jsonify({"message": f"Error: {e}"}), 500
 
 # Fetch all laws with pagination
@@ -658,8 +678,7 @@ def get_selected_items():
             return jsonify({"selectedItems": selected_items}), 200
 
     return jsonify({"selectedItems": []}), 200
-
-
+import os
 
 app.secret_key = 'alwin123123'  # Use a more secure key in production
 app.config['SESSION_TYPE'] = 'filesystem'
