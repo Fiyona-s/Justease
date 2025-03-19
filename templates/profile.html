@@ -287,6 +287,9 @@
 
         <script src="/Final/static/js/scripts.js"></script>
         <script>
+            if (!sessionStorage.getItem("loggedIn")) {
+                window.location.href = "/login";  // Redirect if not logged in
+            }
             // Open Update Profile Modal
             function openUpdateProfileModal() {
                 document.getElementById('updateProfileModal').classList.remove('hidden');

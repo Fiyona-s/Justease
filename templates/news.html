@@ -252,6 +252,9 @@
     </div>
 
     <script>
+        if (!sessionStorage.getItem("loggedIn")) {
+                window.location.href = "/login";  // Redirect if not logged in
+            }
         async function fetchCorporateLawNews() {
             showLoading(); // Show loading overlay
 

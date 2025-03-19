@@ -362,6 +362,9 @@
         <script src="../script/scripts.js"></script>
         <script src="https://unpkg.com/lucide@latest"></script> <!-- Load Lucide Icons -->
         <script>
+            if (!sessionStorage.getItem("loggedIn")) {
+                window.location.href = "/login";  // Redirect if not logged in
+            }
                 lucide.createIcons(); // Initialize Lucide Icons
             // Overlay functionality
             const overlay = document.getElementById('overlay');

@@ -167,6 +167,9 @@
     <script src="/static/js/aiscript.js"></script>
 
     <script>
+        if (!sessionStorage.getItem("loggedIn")) {
+                window.location.href = "/login";  // Redirect if not logged in
+            }
         document.getElementById('chatForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 

@@ -247,6 +247,9 @@
 
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
+            if (!sessionStorage.getItem("loggedIn")) {
+                window.location.href = "/login";  // Redirect if not logged in
+            }
             lucide.createIcons(); // Initialize Lucide Icons
 
             let allLawyers = [];
